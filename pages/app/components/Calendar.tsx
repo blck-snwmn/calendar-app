@@ -32,8 +32,10 @@ const Calendar: React.FC<CalendarProps> = ({ year, month }) => {
                 </thead>
                 <tbody>
                     {Array.from({ length: Math.ceil(totalCells.length / 7) }, (_, week) => (
+                        // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                         <tr key={week} className={styles.weekRow}>
                             {totalCells.slice(week * 7, (week + 1) * 7).map((day, index) => (
+                                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                                 <td key={index} className={day ? styles.dayCell : styles.emptyCell}>
                                     {day || ''}
                                 </td>
