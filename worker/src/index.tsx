@@ -12,7 +12,7 @@ export default {
 	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
 		const fontData = await getGoogleFont();
 		const svg = await satori(
-			<Calendar />,
+			<Calendar year={2024} month={11} />,
 			{
 				width: 400,
 				fonts: [
