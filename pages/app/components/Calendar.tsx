@@ -17,7 +17,7 @@ const Calendar: React.FC<CalendarProps> = ({ year, month }) => {
     const startDay = useMemo(() => new Date(year, month, 1).getDay(), [year, month]);
 
     const days = useMemo(() => Array.from({ length: numDays }, (_, i) => i + 1), [numDays]);
-    const emptyDays = useMemo(() => Array.from({ length: startDay }, () => null), [startDay]);
+    const emptyDays: (number | null)[] = useMemo(() => Array.from({ length: startDay }, () => null), [startDay]);
     const totalCells = useMemo(() => emptyDays.concat(days), [emptyDays, days]);
 
     return (
