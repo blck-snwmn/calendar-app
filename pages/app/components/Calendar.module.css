@@ -1,0 +1,30 @@
+.calendarTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.calendarHeader {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.calendarCell {
+    height: 50px;
+    vertical-align: top;
+    border: 1px solid #ddd;
+    padding: 5px;
+    background-color: #fff;
+}
+
+.emptyCell {
+    background-color: #fafafa;
+}
+
+.dayCell {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.dayCell:hover {
+    background-color: #e0e0e0;
+}
