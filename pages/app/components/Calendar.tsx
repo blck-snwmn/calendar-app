@@ -13,37 +13,28 @@ const daysInMonth = (year: number, month: number) => {
 };
 
 const Calendar: React.FC<CalendarProps> = ({ year, month }) => {
-    const numDays = useMemo(() => daysInMonth(year, month), [year, month]);
-    const startDay = useMemo(() => new Date(year, month, 1).getDay(), [year, month]);
+    const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-    const days = useMemo(() => Array.from({ length: numDays }, (_, i) => i + 1), [numDays]);
-    const emptyDays: (number | null)[] = useMemo(() => Array.from({ length: startDay }, () => null), [startDay]);
-    const totalCells = useMemo(() => emptyDays.concat(days), [emptyDays, days]);
+    const numDays = daysInMonth(year, month);
+    const startDay = new Date(year, month, 1).getDay();
+
+    const days = Array.from({ length: numDays }, (_, i) => i + 1);
+    const emptyDays: (number | null)[] = Array.from({ length: startDay }, () => null);
+    const totalCells = emptyDays.concat(days);
 
     return (
-        <div>
-            <table className={styles.calendarTable}>
-                <thead>
-                    <tr>
-                        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-                            <th key={day} className={styles.headerCell}>{day}</th>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    {Array.from({ length: Math.ceil(totalCells.length / 7) }, (_, week) => (
-                        // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                        <tr key={week} className={styles.weekRow}>
-                            {totalCells.slice(week * 7, (week + 1) * 7).map((day, index) => (
-                                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                                <td key={index} className={day ? styles.dayCell : styles.emptyCell}>
-                                    {day || ''}
-                                </td>
-                            ))}
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+        <div className={styles.calendarContainer}>
+            {weekdays.map(weekday => (
+                <div key={weekday} className={styles.weekday}>{weekday}</div>
+            ))}
+            {emptyDays.map((_, index) => (
+                <div key={`empty-${year}-${month}`} className={styles.emptyDay} />
+            ))}
+            {days.map(day => (
+                <div key={`day-${year}-${month}-${day}`} className={styles.day}>
+                    {day}
+                </div>
+            ))}
         </div>
     );
 };

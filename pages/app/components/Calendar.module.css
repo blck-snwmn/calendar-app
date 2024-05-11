@@ -1,30 +1,49 @@
-.calendarTable {
+/* Calendar.module.css */
+.calendarContainer {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    justify-content: start;
     width: 100%;
-    border-collapse: collapse;
+    /* コンテナの幅を設定 */
 }
 
-.calendarHeader {
+.weekday {
+    flex: 0 0 14%;
+    height: 30px;
+    /* 曜日行の高さ */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: #f0f0f0;
-    color: #333;
+    /* 曜日背景色 */
 }
 
-.calendarCell {
-    height: 50px;
-    vertical-align: top;
-    border: 1px solid #ddd;
-    padding: 5px;
+.day {
+    flex: 0 0 14%;
+    display: flex;
+    align-items: flex-start;
+    /* 上揃え */
+    justify-content: center;
+    height: 100px;
+    /* 日の要素の高さを設定 */
+    margin: 0;
+    /* 隙間なし */
     background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s;
+    /* 背景色の変更にアニメーションを追加 */
 }
 
-.emptyCell {
-    background-color: #fafafa;
-}
-
-.dayCell {
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.dayCell:hover {
+.day:hover {
     background-color: #e0e0e0;
+    /* ホバー時の背景色 */
+}
+
+.emptyDay {
+    flex: 0 0 14%;
+    height: 100px;
+    /* 同じ高さを保持 */
+    margin: 0;
+    /* 隙間なし */
 }
