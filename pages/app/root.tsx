@@ -4,11 +4,22 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  json,
+  useLoaderData,
 } from "@remix-run/react";
+
 import i18n from './i18n';
 import { I18nextProvider } from "react-i18next";
 
+export async function loader({ request }: { request: Request }) {
+  const acceptLanguage = request.headers.get("accept-language");
+  const locale = acceptLanguage?.split(",")?.[0];
+  return json({ locale: locale || 'en' });
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
+  const { locale } = useLoaderData<typeof loader>()
+  i18n.changeLanguage(locale);
   return (
     <html lang="en">
       <head>
