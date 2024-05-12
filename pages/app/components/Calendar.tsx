@@ -97,8 +97,9 @@ const Calendar: React.FC<CalendarProps> = ({ year, month, holidays, locale, even
     const days = Array.from({ length: numDays }, (_, i) => {
         const day = i + 1;
         const date = new Date(year, month, day);
-        const isHoliday = holidays[format(date, 'yyyy-MM-dd')] || false;
-        const dayEvents = events.filter(event => isEqual(formatEventDate(event, locale), date));
+        const formatedDate = format(date, 'yyyy-MM-dd');
+        const isHoliday = holidays[formatedDate] || false;
+        const dayEvents = events.filter(event => isEqual(formatEventDate(event, locale), formatedDate));
         return { day, isHoliday, events: dayEvents, isPrevMonth: false };
     });
 
