@@ -33,15 +33,17 @@ const weekdayStyle = css`
 const dayStyle = css`
     flex: 0 0 14%;
     display: flex;
-    align-items: flex-start;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
     height: 100px;
     margin: 0;
     background-color: #fff;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     transition: background-color 0.2s;
+    gap: 8px;
     &:hover {
-        background-color: #e0e0e0;
+    background-color: #e0e0e0;
     }
 `;
 
@@ -53,6 +55,10 @@ const emptyDayStyle = css`
     flex: 0 0 14%;
     height: 100px;
     margin: 0;
+`;
+
+const eventTitleStyle = css`
+  font-size: 0.9em;
 `;
 
 const daysInMonth = (year: number, month: number) => {
@@ -85,7 +91,7 @@ const Calendar: React.FC<CalendarProps> = ({ year, month, holidays, locale, even
                 <div key={`day-${year}-${month}-${day}`} css={[dayStyle, isHoliday && holidayStyle]}>
                     {day}
                     {events.map(event => (
-                        <div key={event.id}>{event.title}</div>
+                        <div key={event.id} css={eventTitleStyle}>{event.title}</div>
                     ))}
                 </div>
             ))}
