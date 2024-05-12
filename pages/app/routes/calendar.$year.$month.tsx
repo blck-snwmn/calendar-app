@@ -2,6 +2,7 @@ import { type LoaderFunctionArgs, json } from "@remix-run/cloudflare";
 import { useLoaderData } from "@remix-run/react";
 import Calendar from "~/components/Calendar";
 import { useTranslation } from 'react-i18next';
+import { getEvents } from "~/utils/events";
 
 // 仮のデータロード関数
 export const loader = async ({ params }: LoaderFunctionArgs) => {
@@ -20,18 +21,21 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
     }
     console.log(`Loading data for ${y}-${m}`);
     // TODO 本番環境ではここでデータベースからデータを取得します
-    const holidays = { '2024-5-1': true }
-    return json({ year: y, month: m, holidays });
+    const holidays = { '2024-05-01': true }
+
+    const events = await getEvents(y, m);
+
+    return json({ year: y, month: m, holidays, events });
 };
 
 export default function CalendarPages() {
-    const { year, month, holidays } = useLoaderData<typeof loader>()
-    const { t } = useTranslation();
+    const { year, month, holidays, events } = useLoaderData<typeof loader>()
+    const { t, i18n } = useTranslation();
     return (
         <div>
             {t('welcome')}
             <h1>Calendar for {year}-{month + 1}</h1>
-            <Calendar year={year} month={month} holidays={holidays} />
+            <Calendar year={year} month={month} holidays={holidays} locale={i18n.language} events={events} />
         </div>
     );
 }

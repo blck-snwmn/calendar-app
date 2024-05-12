@@ -1,11 +1,16 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import type React from 'react';
+import { formatEventDate, type Event } from '~/utils/events';
+import { setYear, setMonth, setDate, format, isEqual } from 'date-fns';
+import { toZonedTime } from 'date-fns-tz';
 
 type CalendarProps = {
     year: number;
     month: number; // 月は0基準で、0が1月、11が12月です。
     holidays: { [date: string]: boolean }; // 日付をキーとして、休日かどうかのブール値を持つ
+    locale: string;
+    events: Event[];
 };
 
 const calendarContainerStyle = css`
@@ -54,16 +59,19 @@ const daysInMonth = (year: number, month: number) => {
     return new Date(year, month + 1, 0).getDate();
 };
 
-const Calendar: React.FC<CalendarProps> = ({ year, month, holidays }) => {
+const Calendar: React.FC<CalendarProps> = ({ year, month, holidays, locale, events }) => {
     const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const numDays = daysInMonth(year, month);
     const startDay = new Date(year, month, 1).getDay();
-    const days = Array.from({ length: numDays }, (_, i) => {
+    const days: { day: number, isHoliday: boolean, events: Event[] }[] = Array.from({ length: numDays }, (_, i) => {
         const day = i + 1;
-        const date = `${year}-${month + 1}-${day}`;
-        const isHoliday = holidays[date] || false;
-        return { day, isHoliday };
-    }); const emptyDays = Array.from({ length: startDay }, () => null);
+        const date = new Date(year, month, day);
+        const formatedDate = format(date, 'yyyy-MM-dd')
+        const isHoliday = holidays[formatedDate] || false;
+        const dayEvents = events.filter(event => isEqual(formatEventDate(event, locale), formatedDate));
+        return { day, isHoliday, events: dayEvents };
+    });
+    const emptyDays = Array.from({ length: startDay }, () => null);
 
     return (
         <div css={calendarContainerStyle}>
@@ -73,9 +81,12 @@ const Calendar: React.FC<CalendarProps> = ({ year, month, holidays }) => {
             {emptyDays.map(() => (
                 <div key={`empty-${year}-${month}`} css={emptyDayStyle} />
             ))}
-            {days.map(({ day, isHoliday }) => (
+            {days.map(({ day, isHoliday, events }) => (
                 <div key={`day-${year}-${month}-${day}`} css={[dayStyle, isHoliday && holidayStyle]}>
                     {day}
+                    {events.map(event => (
+                        <div key={event.id}>{event.title}</div>
+                    ))}
                 </div>
             ))}
         </div>
