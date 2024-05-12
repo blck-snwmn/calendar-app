@@ -3,7 +3,6 @@ import { Resvg, initWasm } from "@resvg/resvg-wasm";
 import satori from "satori";
 //@ts-ignore
 import resvgWasm from "../node_modules/@resvg/resvg-wasm/index_bg.wasm";
-import Calendar from "calendar-pages/app/components/Calendar"
 
 // initialize resvg
 await initWasm(resvgWasm);
@@ -12,7 +11,7 @@ export default {
 	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
 		const fontData = await getGoogleFont();
 		const svg = await satori(
-			<Calendar year={2024} month={11} />,
+			<Calendar />,
 			{
 				width: 400,
 				fonts: [
@@ -38,7 +37,7 @@ export default {
 	},
 };
 
-const Component = () => {
+const Calendar = () => {
 	return (<div>Hello World!</div>);
 }
 

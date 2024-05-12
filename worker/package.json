@@ -18,9 +18,11 @@
     "wrangler": "^3.0.0"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
     "@resvg/resvg-wasm": "^2.6.2",
+    "calendar-pages": "workspace:^",
     "react": "^18.2.0",
-    "satori": "^0.10.13",
-    "calendar-pages": "workspace:^"
+    "satori": "^0.10.13"
   }
 }
