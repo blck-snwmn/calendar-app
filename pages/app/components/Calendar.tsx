@@ -80,28 +80,35 @@ const daysInMonth = (year: number, month: number) => {
 const Calendar: React.FC<CalendarProps> = ({ year, month, holidays, locale, events }) => {
     const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const numDays = daysInMonth(year, month);
-    const startDay = new Date(year, month, 1).getDay();
-    const days: { day: number, isHoliday: boolean, events: Event[] }[] = Array.from({ length: numDays }, (_, i) => {
+    const firstDay = new Date(year, month, 1).getDay();
+    const prevMonthDays = daysInMonth(year, month - 1);
+
+    const days = Array.from({ length: numDays }, (_, i) => {
         const day = i + 1;
         const date = new Date(year, month, day);
-        const formatedDate = format(date, 'yyyy-MM-dd')
-        const isHoliday = holidays[formatedDate] || false;
-        const dayEvents = events.filter(event => isEqual(formatEventDate(event, locale), formatedDate));
+        const isHoliday = holidays[format(date, 'yyyy-MM-dd')] || false;
+        const dayEvents = events.filter(event => isEqual(formatEventDate(event, locale), date));
         return { day, isHoliday, events: dayEvents };
     });
-    const emptyDays = Array.from({ length: startDay }, () => null);
+
+    const prevMonthDates = Array.from({ length: firstDay }, (_, i) => {
+        const day = prevMonthDays - firstDay + i + 1;
+        return { day, isHoliday: false, events: [] };
+    });
+
+    const allDates = [...prevMonthDates, ...days];
 
     return (
         <div css={calendarContainerStyle}>
             {weekdays.map(weekday => (
                 <div key={weekday} css={weekdayStyle}>{weekday}</div>
             ))}
-            {emptyDays.map(() => (
-                <div key={`empty-${year}-${month}`} css={emptyDayStyle} />
-            ))}
-            {days.map(({ day, isHoliday, events }) => (
-                <div key={`day-${year}-${month}-${day}`} css={[dayStyle, isHoliday && holidayStyle]}>
-                    {day}
+            {allDates.map(({ day, isHoliday, events }, index) => (
+                <div
+                    key={`day-${year}-${month}-${day}`}
+                    css={[dayStyle, isHoliday && holidayStyle]}
+                >
+                    <div>{day}</div>
                     {events.map(event => (
                         <div key={event.id} css={eventStyle}>{event.title}</div>
                     ))}
