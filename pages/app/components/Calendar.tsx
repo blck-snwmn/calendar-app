@@ -2,8 +2,7 @@
 import { css } from '@emotion/react';
 import type React from 'react';
 import { formatEventDate, type Event } from '~/utils/events';
-import { setYear, setMonth, setDate, format, isEqual } from 'date-fns';
-import { toZonedTime } from 'date-fns-tz';
+import { format, isEqual } from 'date-fns';
 
 type CalendarProps = {
     year: number;
@@ -53,12 +52,6 @@ const holidayStyle = css`
     color: red;
 `;
 
-const emptyDayStyle = css`
-    flex: 0 0 14%;
-    height: 100px;
-    margin: 0;
-`;
-
 const prevMonthDayStyle = css`
   color: #888;
 `;
@@ -79,13 +72,6 @@ const eventStyle = css`
 
 const daysInMonth = (year: number, month: number) => {
     return new Date(year, month + 1, 0).getDate();
-};
-
-type DateObject = {
-    day: number;
-    isHoliday: boolean;
-    events: never[];
-    isPrevMonth: boolean;
 };
 
 const Calendar: React.FC<CalendarProps> = ({ year, month, holidays, locale, events }) => {
