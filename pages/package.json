@@ -20,14 +20,17 @@
     "@remix-run/cloudflare": "^2.8.1",
     "@remix-run/cloudflare-pages": "^2.8.1",
     "@remix-run/react": "^2.8.1",
+    "date-fns": "^3.6.0",
+    "i18next": "^23.11.4",
     "isbot": "^4.1.0",
     "miniflare": "^3.20240404.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-i18next": "^14.1.1"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240502.0",
-    "@remix-run/dev": "^2.8.1",
+    "@remix-run/dev": "^2.9.2",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.7.4",

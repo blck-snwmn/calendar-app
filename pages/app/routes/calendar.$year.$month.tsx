@@ -1,6 +1,7 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/cloudflare";
 import { useLoaderData } from "@remix-run/react";
 import Calendar from "~/components/Calendar";
+import { useTranslation } from 'react-i18next';
 
 // 仮のデータロード関数
 export const loader = async ({ params }: LoaderFunctionArgs) => {
@@ -25,8 +26,10 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 
 export default function CalendarPages() {
     const { year, month, holidays } = useLoaderData<typeof loader>()
+    const { t } = useTranslation();
     return (
         <div>
+            {t('welcome')}
             <h1>Calendar for {year}-{month + 1}</h1>
             <Calendar year={year} month={month} holidays={holidays} />
         </div>
