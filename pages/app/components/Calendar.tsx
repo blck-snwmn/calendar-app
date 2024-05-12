@@ -42,8 +42,10 @@ const dayStyle = css`
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     transition: background-color 0.2s;
     gap: 8px;
+    padding: 8px;
+    box-sizing: border-box;
     &:hover {
-    background-color: #e0e0e0;
+        background-color: #e0e0e0;
     }
 `;
 
@@ -57,8 +59,18 @@ const emptyDayStyle = css`
     margin: 0;
 `;
 
-const eventTitleStyle = css`
-  font-size: 0.9em;
+const eventStyle = css`
+    font-size: 0.9em;
+    padding: 4px;
+    border-radius: 4px;
+    background-color: #f0f0f0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 4px;
 `;
 
 const daysInMonth = (year: number, month: number) => {
@@ -91,7 +103,7 @@ const Calendar: React.FC<CalendarProps> = ({ year, month, holidays, locale, even
                 <div key={`day-${year}-${month}-${day}`} css={[dayStyle, isHoliday && holidayStyle]}>
                     {day}
                     {events.map(event => (
-                        <div key={event.id} css={eventTitleStyle}>{event.title}</div>
+                        <div key={event.id} css={eventStyle}>{event.title}</div>
                     ))}
                 </div>
             ))}
