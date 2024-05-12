@@ -19,16 +19,16 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
     }
     console.log(`Loading data for ${y}-${m}`);
     // TODO 本番環境ではここでデータベースからデータを取得します
-    return json({ year: y, month: m });
+    const holidays = { '2024-5-1': true }
+    return json({ year: y, month: m, holidays });
 };
 
 export default function CalendarPages() {
-    const data = useLoaderData<typeof loader>()
-    console.log(data);
+    const { year, month, holidays } = useLoaderData<typeof loader>()
     return (
         <div>
-            <h1>Calendar for {data.year}-{data.month + 1}</h1>
-            <Calendar year={data.year} month={data.month} />
+            <h1>Calendar for {year}-{month + 1}</h1>
+            <Calendar year={year} month={month} holidays={holidays} />
         </div>
     );
 }

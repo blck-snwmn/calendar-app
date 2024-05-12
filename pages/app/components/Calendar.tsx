@@ -5,6 +5,7 @@ import type React from 'react';
 type CalendarProps = {
     year: number;
     month: number; // 月は0基準で、0が1月、11が12月です。
+    holidays: { [date: string]: boolean }; // 日付をキーとして、休日かどうかのブール値を持つ
 };
 
 const calendarContainerStyle = css`
@@ -39,6 +40,10 @@ const dayStyle = css`
     }
 `;
 
+const holidayStyle = css`
+    color: red;
+`;
+
 const emptyDayStyle = css`
     flex: 0 0 14%;
     height: 100px;
@@ -49,12 +54,16 @@ const daysInMonth = (year: number, month: number) => {
     return new Date(year, month + 1, 0).getDate();
 };
 
-const Calendar: React.FC<CalendarProps> = ({ year, month }) => {
+const Calendar: React.FC<CalendarProps> = ({ year, month, holidays }) => {
     const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const numDays = daysInMonth(year, month);
     const startDay = new Date(year, month, 1).getDay();
-    const days = Array.from({ length: numDays }, (_, i) => i + 1);
-    const emptyDays = Array.from({ length: startDay }, () => null);
+    const days = Array.from({ length: numDays }, (_, i) => {
+        const day = i + 1;
+        const date = `${year}-${month + 1}-${day}`;
+        const isHoliday = holidays[date] || false;
+        return { day, isHoliday };
+    }); const emptyDays = Array.from({ length: startDay }, () => null);
 
     return (
         <div css={calendarContainerStyle}>
@@ -64,8 +73,8 @@ const Calendar: React.FC<CalendarProps> = ({ year, month }) => {
             {emptyDays.map(() => (
                 <div key={`empty-${year}-${month}`} css={emptyDayStyle} />
             ))}
-            {days.map(day => (
-                <div key={`day-${year}-${month}-${day}`} css={dayStyle}>
+            {days.map(({ day, isHoliday }) => (
+                <div key={`day-${year}-${month}-${day}`} css={[dayStyle, isHoliday && holidayStyle]}>
                     {day}
                 </div>
             ))}
