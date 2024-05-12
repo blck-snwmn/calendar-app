@@ -79,22 +79,16 @@ const Calendar: React.FC<CalendarProps> = ({ year, month, holidays, locale, even
     const numDays = daysInMonth(year, month);
     const firstDay = new Date(year, month, 1).getDay();
     const prevMonthDays = daysInMonth(year, month - 1);
+    const totalDays = firstDay + numDays;
 
-    const days = Array.from({ length: numDays }, (_, i) => {
-        const day = i + 1;
-        const date = new Date(year, month, day);
+    const allDates = Array.from({ length: totalDays }, (_, i) => {
+        const isPrevMonth = i < firstDay;
+        const date = new Date(year, isPrevMonth ? month - 1 : month, isPrevMonth ? prevMonthDays - firstDay + i + 1 : i - firstDay + 1);
         const formatedDate = format(date, 'yyyy-MM-dd');
         const isHoliday = holidays[formatedDate] || false;
         const dayEvents = events.filter(event => isEqual(formatEventDate(event, locale), formatedDate));
-        return { day, isHoliday, events: dayEvents, isPrevMonth: false };
+        return { day: date.getDate(), isHoliday, events: dayEvents, isPrevMonth };
     });
-
-    const prevMonthDates = Array.from({ length: firstDay }, (_, i) => {
-        const day = prevMonthDays - firstDay + i + 1;
-        return { day, isHoliday: false, events: [], isPrevMonth: true };
-    });
-
-    const allDates = [...prevMonthDates, ...days];
 
     return (
         <div css={calendarContainerStyle}>
