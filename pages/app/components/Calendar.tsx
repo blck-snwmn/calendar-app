@@ -59,6 +59,10 @@ const emptyDayStyle = css`
     margin: 0;
 `;
 
+const prevMonthDayStyle = css`
+  color: #888;
+`;
+
 const eventStyle = css`
     font-size: 0.9em;
     padding: 4px;
@@ -77,6 +81,13 @@ const daysInMonth = (year: number, month: number) => {
     return new Date(year, month + 1, 0).getDate();
 };
 
+type DateObject = {
+    day: number;
+    isHoliday: boolean;
+    events: never[];
+    isPrevMonth: boolean;
+};
+
 const Calendar: React.FC<CalendarProps> = ({ year, month, holidays, locale, events }) => {
     const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const numDays = daysInMonth(year, month);
@@ -88,12 +99,12 @@ const Calendar: React.FC<CalendarProps> = ({ year, month, holidays, locale, even
         const date = new Date(year, month, day);
         const isHoliday = holidays[format(date, 'yyyy-MM-dd')] || false;
         const dayEvents = events.filter(event => isEqual(formatEventDate(event, locale), date));
-        return { day, isHoliday, events: dayEvents };
+        return { day, isHoliday, events: dayEvents, isPrevMonth: false };
     });
 
     const prevMonthDates = Array.from({ length: firstDay }, (_, i) => {
         const day = prevMonthDays - firstDay + i + 1;
-        return { day, isHoliday: false, events: [] };
+        return { day, isHoliday: false, events: [], isPrevMonth: true };
     });
 
     const allDates = [...prevMonthDates, ...days];
@@ -103,10 +114,14 @@ const Calendar: React.FC<CalendarProps> = ({ year, month, holidays, locale, even
             {weekdays.map(weekday => (
                 <div key={weekday} css={weekdayStyle}>{weekday}</div>
             ))}
-            {allDates.map(({ day, isHoliday, events }, index) => (
+            {allDates.map(({ day, isHoliday, events, isPrevMonth }, index) => (
                 <div
                     key={`day-${year}-${month}-${day}`}
-                    css={[dayStyle, isHoliday && holidayStyle]}
+                    css={[
+                        dayStyle,
+                        isHoliday && holidayStyle,
+                        isPrevMonth && prevMonthDayStyle,
+                    ]}
                 >
                     <div>{day}</div>
                     {events.map(event => (
