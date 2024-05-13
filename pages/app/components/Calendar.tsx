@@ -99,7 +99,7 @@ const Calendar: React.FC<CalendarProps> = ({
 		const dayEvents = events.filter((event) =>
 			isEqual(formatEventDate(event, locale), formatedDate),
 		);
-		return { day: date.getDate(), isHoliday, events: dayEvents, isPrevMonth };
+		return { day: date.getDate(), isHoliday, events: dayEvents, isPrevMonth, key: `${isPrevMonth ? 'prev' : 'current'}-${formatedDate}` };
 	});
 
 	return (
@@ -109,9 +109,9 @@ const Calendar: React.FC<CalendarProps> = ({
 					{weekday}
 				</div>
 			))}
-			{allDates.map(({ day, isHoliday, events, isPrevMonth }) => (
+			{allDates.map(({ day, isHoliday, events, isPrevMonth, key }) => (
 				<div
-					key={`day-${year}-${month}-${day}`}
+					key={key}
 					css={[
 						dayStyle,
 						isHoliday && holidayStyle,
