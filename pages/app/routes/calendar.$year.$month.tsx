@@ -1,8 +1,31 @@
+/** @jsxImportSource @emotion/react */
+import { css } from "@emotion/react";
 import { type LoaderFunctionArgs, json } from "@remix-run/cloudflare";
-import { useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData, useNavigate } from "@remix-run/react";
+import { addMonths, format, subMonths } from "date-fns";
 import { useTranslation } from "react-i18next";
 import Calendar from "~/components/Calendar";
 import { getEvents } from "~/utils/events";
+
+const linkStyle = css`
+  text-decoration: none;
+  color: inherit;
+  &:visited {
+    color: inherit;
+  }
+`;
+
+const buttonStyle = css`
+  display: inline-block;
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  cursor: pointer;
+  &:hover {
+    background-color: #e8e8e8;
+  }
+`;
 
 // 仮のデータロード関数
 export const loader = async ({ params }: LoaderFunctionArgs) => {
@@ -31,12 +54,21 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 export default function CalendarPages() {
 	const { year, month, holidays, events } = useLoaderData<typeof loader>();
 	const { t, i18n } = useTranslation();
+
+	const currentDate = new Date(year, month);
+	const prevMonth = format(subMonths(currentDate, 1), 'yyyy/MM');
+	const nextMonth = format(addMonths(currentDate, 1), 'yyyy/MM');
+
 	return (
 		<div>
 			{t("welcome")}
-			<h1>
+			<h2>
+				<Link to={`/calendar/${prevMonth}`} css={[linkStyle, buttonStyle]}>{'<'}</Link>
+				{' '}
 				Calendar for {year}-{month + 1}
-			</h1>
+				{' '}
+				<Link to={`/calendar/${nextMonth}`} css={[linkStyle, buttonStyle]}>{'>'}</Link>
+			</h2>
 			<Calendar
 				year={year}
 				month={month}
