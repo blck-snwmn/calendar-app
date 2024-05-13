@@ -1,15 +1,15 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
-import type React from 'react';
-import { formatEventDate, type Event } from '~/utils/events';
-import { format, isEqual } from 'date-fns';
+import { css } from "@emotion/react";
+import { format, isEqual } from "date-fns";
+import type React from "react";
+import { type Event, formatEventDate } from "~/utils/events";
 
 type CalendarProps = {
-    year: number;
-    month: number; // 月は0基準で、0が1月、11が12月です。
-    holidays: { [date: string]: boolean }; // 日付をキーとして、休日かどうかのブール値を持つ
-    locale: string;
-    events: Event[];
+	year: number;
+	month: number; // 月は0基準で、0が1月、11が12月です。
+	holidays: { [date: string]: boolean }; // 日付をキーとして、休日かどうかのブール値を持つ
+	locale: string;
+	events: Event[];
 };
 
 const calendarContainerStyle = css`
@@ -71,47 +71,63 @@ const eventStyle = css`
 `;
 
 const daysInMonth = (year: number, month: number) => {
-    return new Date(year, month + 1, 0).getDate();
+	return new Date(year, month + 1, 0).getDate();
 };
 
-const Calendar: React.FC<CalendarProps> = ({ year, month, holidays, locale, events }) => {
-    const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const numDays = daysInMonth(year, month);
-    const firstDay = new Date(year, month, 1).getDay();
-    const prevMonthDays = daysInMonth(year, month - 1);
-    const totalDays = firstDay + numDays;
+const Calendar: React.FC<CalendarProps> = ({
+	year,
+	month,
+	holidays,
+	locale,
+	events,
+}) => {
+	const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+	const numDays = daysInMonth(year, month);
+	const firstDay = new Date(year, month, 1).getDay();
+	const prevMonthDays = daysInMonth(year, month - 1);
+	const totalDays = firstDay + numDays;
 
-    const allDates = Array.from({ length: totalDays }, (_, i) => {
-        const isPrevMonth = i < firstDay;
-        const date = new Date(year, isPrevMonth ? month - 1 : month, isPrevMonth ? prevMonthDays - firstDay + i + 1 : i - firstDay + 1);
-        const formatedDate = format(date, 'yyyy-MM-dd');
-        const isHoliday = holidays[formatedDate] || false;
-        const dayEvents = events.filter(event => isEqual(formatEventDate(event, locale), formatedDate));
-        return { day: date.getDate(), isHoliday, events: dayEvents, isPrevMonth };
-    });
+	const allDates = Array.from({ length: totalDays }, (_, i) => {
+		const isPrevMonth = i < firstDay;
+		const date = new Date(
+			year,
+			isPrevMonth ? month - 1 : month,
+			isPrevMonth ? prevMonthDays - firstDay + i + 1 : i - firstDay + 1,
+		);
+		const formatedDate = format(date, "yyyy-MM-dd");
+		const isHoliday = holidays[formatedDate] || false;
+		const dayEvents = events.filter((event) =>
+			isEqual(formatEventDate(event, locale), formatedDate),
+		);
+		return { day: date.getDate(), isHoliday, events: dayEvents, isPrevMonth };
+	});
 
-    return (
-        <div css={calendarContainerStyle}>
-            {weekdays.map(weekday => (
-                <div key={weekday} css={weekdayStyle}>{weekday}</div>
-            ))}
-            {allDates.map(({ day, isHoliday, events, isPrevMonth }, index) => (
-                <div
-                    key={`day-${year}-${month}-${day}`}
-                    css={[
-                        dayStyle,
-                        isHoliday && holidayStyle,
-                        isPrevMonth && prevMonthDayStyle,
-                    ]}
-                >
-                    <div>{day}</div>
-                    {events.map(event => (
-                        <div key={event.id} css={eventStyle}>{event.title}</div>
-                    ))}
-                </div>
-            ))}
-        </div>
-    );
+	return (
+		<div css={calendarContainerStyle}>
+			{weekdays.map((weekday) => (
+				<div key={weekday} css={weekdayStyle}>
+					{weekday}
+				</div>
+			))}
+			{allDates.map(({ day, isHoliday, events, isPrevMonth }) => (
+				<div
+					key={`day-${year}-${month}-${day}`}
+					css={[
+						dayStyle,
+						isHoliday && holidayStyle,
+						isPrevMonth && prevMonthDayStyle,
+					]}
+				>
+					<div>{day}</div>
+					{events.map((event) => (
+						<div key={event.id} css={eventStyle}>
+							{event.title}
+						</div>
+					))}
+				</div>
+			))}
+		</div>
+	);
 };
 
 export default Calendar;
