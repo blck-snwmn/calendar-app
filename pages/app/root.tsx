@@ -7,9 +7,15 @@ import {
 	json,
 	useLoaderData,
 } from "@remix-run/react";
+import stylesheet from "~/tailwind.css?url";
 
 import { I18nextProvider } from "react-i18next";
 import i18n from "./i18n";
+import type { LinksFunction } from "@remix-run/cloudflare";
+
+export const links: LinksFunction = () => [
+	{ rel: "stylesheet", href: stylesheet },
+];
 
 export async function loader({ request }: { request: Request }) {
 	const acceptLanguage = request.headers.get("accept-language");

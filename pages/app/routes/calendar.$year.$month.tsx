@@ -1,31 +1,9 @@
-/** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
 import { type LoaderFunctionArgs, json } from "@remix-run/cloudflare";
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
 import { addMonths, format, subMonths } from "date-fns";
 import { useTranslation } from "react-i18next";
 import Calendar from "~/components/Calendar";
 import { getEvents } from "~/utils/events";
-
-const linkStyle = css`
-  text-decoration: none;
-  color: inherit;
-  &:visited {
-    color: inherit;
-  }
-`;
-
-const buttonStyle = css`
-  display: inline-block;
-  padding: 4px 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: #f8f8f8;
-  cursor: pointer;
-  &:hover {
-    background-color: #e8e8e8;
-  }
-`;
 
 // 仮のデータロード関数
 export const loader = async ({ params }: LoaderFunctionArgs) => {
@@ -62,13 +40,17 @@ export default function CalendarPages() {
 	return (
 		<div>
 			{t("welcome")}
-			<h2>
-				<Link to={`/calendar/${prevMonth}`} css={[linkStyle, buttonStyle]}>
-					{"<"}
-				</Link>{" "}
-				Calendar for {year}-{month + 1}{" "}
-				<Link to={`/calendar/${nextMonth}`} css={[linkStyle, buttonStyle]}>
-					{">"}
+			<h2 className="flex items-center space-x-4">
+				<Link to={`/calendar/${prevMonth}`} className="text-gray-700 visited:text-gray-700 no-underline">
+					<button className="inline-block px-2 py-1 border border-gray-300 rounded bg-gray-100 hover:bg-gray-200" type="button">
+						{"<"}
+					</button>
+				</Link>
+				<span>Calendar for {year}-{month + 1}</span>
+				<Link to={`/calendar/${nextMonth}`} className="text-gray-700 visited:text-gray-700 no-underline">
+					<button className="inline-block px-2 py-1 border border-gray-300 rounded bg-gray-100 hover:bg-gray-200" type="button">
+						{">"}
+					</button>
 				</Link>
 			</h2>
 			<Calendar

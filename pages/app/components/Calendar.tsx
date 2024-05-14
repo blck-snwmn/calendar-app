@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
 import { format, isEqual } from "date-fns";
 import type React from "react";
 import { type Event, formatEventDate } from "~/utils/events";
@@ -11,64 +9,6 @@ type CalendarProps = {
 	locale: string;
 	events: Event[];
 };
-
-const calendarContainerStyle = css`
-    display: flex;
-    flex-wrap: wrap;
-    padding: 10px;
-    justify-content: start;
-    width: 100%;
-`;
-
-const weekdayStyle = css`
-    flex: 0 0 14%;
-    height: 30px; /* 曜日行の高さ */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #f0f0f0; /* 曜日背景色 */
-`;
-
-const dayStyle = css`
-    flex: 0 0 14%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    height: 100px;
-    margin: 0;
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    transition: background-color 0.2s;
-    gap: 8px;
-    padding: 8px;
-    box-sizing: border-box;
-    &:hover {
-        background-color: #e0e0e0;
-    }
-`;
-
-const holidayStyle = css`
-    color: red;
-`;
-
-const prevMonthDayStyle = css`
-  color: #888;
-`;
-
-const eventStyle = css`
-    font-size: 0.9em;
-    padding: 4px;
-    border-radius: 4px;
-    background-color: #f0f0f0;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 100%;
-    box-sizing: border-box;
-    margin-bottom: 4px;
-`;
 
 const daysInMonth = (year: number, month: number) => {
 	return new Date(year, month + 1, 0).getDate();
@@ -119,24 +59,20 @@ const Calendar: React.FC<CalendarProps> = ({
 	const allDates = generateCalendarDates(year, month, holidays, locale, events);
 
 	return (
-		<div css={calendarContainerStyle}>
+		<div className="flex flex-wrap p-2 justify-start w-full">
 			{weekdays.map((weekday) => (
-				<div key={weekday} css={weekdayStyle}>
+				<div key={weekday} className="flex-0 flex-grow-[0] flex-shrink-[0] w-[14%] h-[30px] flex items-center justify-center bg-gray-200">
 					{weekday}
 				</div>
 			))}
 			{allDates.map(({ day, isHoliday, events, isPrevMonth, key }) => (
 				<div
 					key={key}
-					css={[
-						dayStyle,
-						isHoliday && holidayStyle,
-						isPrevMonth && prevMonthDayStyle,
-					]}
+					className={`flex-0 flex-grow-[0] flex-shrink-[0] w-[14%] flex flex-col items-center justify-start h-[100px] m-0 bg-white shadow-sm transition-colors gap-2 p-2 box-border hover:bg-gray-200 ${isHoliday ? "text-red-500" : ""} ${isPrevMonth ? "text-gray-500" : ""}`}
 				>
 					<div>{day}</div>
 					{events.map((event) => (
-						<div key={event.id} css={eventStyle}>
+						<div key={event.id} className="text-xs p-1 rounded bg-gray-200 shadow-xs whitespace-nowrap overflow-hidden text-ellipsis w-full box-border mb-1">
 							{event.title}
 						</div>
 					))}
