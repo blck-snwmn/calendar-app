@@ -56,18 +56,20 @@ export default function CalendarPages() {
 	const { t, i18n } = useTranslation();
 
 	const currentDate = new Date(year, month);
-	const prevMonth = format(subMonths(currentDate, 1), 'yyyy/MM');
-	const nextMonth = format(addMonths(currentDate, 1), 'yyyy/MM');
+	const prevMonth = format(subMonths(currentDate, 1), "yyyy/MM");
+	const nextMonth = format(addMonths(currentDate, 1), "yyyy/MM");
 
 	return (
 		<div>
 			{t("welcome")}
 			<h2>
-				<Link to={`/calendar/${prevMonth}`} css={[linkStyle, buttonStyle]}>{'<'}</Link>
-				{' '}
-				Calendar for {year}-{month + 1}
-				{' '}
-				<Link to={`/calendar/${nextMonth}`} css={[linkStyle, buttonStyle]}>{'>'}</Link>
+				<Link to={`/calendar/${prevMonth}`} css={[linkStyle, buttonStyle]}>
+					{"<"}
+				</Link>{" "}
+				Calendar for {year}-{month + 1}{" "}
+				<Link to={`/calendar/${nextMonth}`} css={[linkStyle, buttonStyle]}>
+					{">"}
+				</Link>
 			</h2>
 			<Calendar
 				year={year}

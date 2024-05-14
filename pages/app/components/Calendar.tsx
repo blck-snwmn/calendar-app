@@ -99,7 +99,13 @@ const Calendar: React.FC<CalendarProps> = ({
 		const dayEvents = events.filter((event) =>
 			isEqual(formatEventDate(event, locale), formatedDate),
 		);
-		return { day: date.getDate(), isHoliday, events: dayEvents, isPrevMonth, key: `${isPrevMonth ? 'prev' : 'current'}-${formatedDate}` };
+		return {
+			day: date.getDate(),
+			isHoliday,
+			events: dayEvents,
+			isPrevMonth,
+			key: `${isPrevMonth ? "prev" : "current"}-${formatedDate}`,
+		};
 	});
 
 	return (
