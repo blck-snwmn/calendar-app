@@ -31,6 +31,17 @@ export async function getMonthEvents(year: number, month: number): Promise<Event
 	return eventData;
 }
 
+export async function getDateEvents(year: number, month: number, day: number): Promise<Event[]> {
+	return eventData.filter(event => new Date(event.start).getFullYear() === year &&
+		new Date(event.start).getMonth() === month &&
+		new Date(event.start).getDate() === day);
+}
+
+export async function getEvent(eventId: string): Promise<Event | undefined> {
+	return eventData.find(event => event.id === eventId);
+}
+
+
 export function formatEventDate(event: Event, locale: string): string {
 	const startDate = toDate(event.start, { timeZone: event.timeZone });
 	const localStartDate = toZonedTime(startDate, getTimeZone(locale));
