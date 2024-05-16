@@ -9,9 +9,9 @@ import {
 } from "@remix-run/react";
 import stylesheet from "~/tailwind.css?url";
 
+import type { LinksFunction } from "@remix-run/cloudflare";
 import { I18nextProvider } from "react-i18next";
 import i18n from "./i18n";
-import type { LinksFunction } from "@remix-run/cloudflare";
 
 export const links: LinksFunction = () => [
 	{ rel: "stylesheet", href: stylesheet },
@@ -20,6 +20,7 @@ export const links: LinksFunction = () => [
 export async function loader({ request }: { request: Request }) {
 	const acceptLanguage = request.headers.get("accept-language");
 	const locale = acceptLanguage?.split(",")?.[0];
+	console.log("locale", locale);
 	return json({ locale: locale || "en" });
 }
 

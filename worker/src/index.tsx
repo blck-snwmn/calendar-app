@@ -1,5 +1,5 @@
-import React from "react";
 import { Resvg, initWasm } from "@resvg/resvg-wasm";
+import React from "react";
 import satori from "satori";
 //@ts-ignore
 import resvgWasm from "../node_modules/@resvg/resvg-wasm/index_bg.wasm";
@@ -8,22 +8,23 @@ import resvgWasm from "../node_modules/@resvg/resvg-wasm/index_bg.wasm";
 await initWasm(resvgWasm);
 
 export default {
-	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+	async fetch(
+		request: Request,
+		env: Env,
+		ctx: ExecutionContext,
+	): Promise<Response> {
 		const fontData = await getGoogleFont();
-		const svg = await satori(
-			<Calendar />,
-			{
-				width: 400,
-				fonts: [
-					{
-						name: "Roboto",
-						data: fontData,
-						weight: 400,
-						style: "normal",
-					},
-				],
-			},
-		);
+		const svg = await satori(<Calendar />, {
+			width: 400,
+			fonts: [
+				{
+					name: "Roboto",
+					data: fontData,
+					weight: 400,
+					style: "normal",
+				},
+			],
+		});
 
 		const resvg = new Resvg(svg, {
 			fitTo: {
@@ -38,8 +39,8 @@ export default {
 };
 
 const Calendar = () => {
-	return (<div>Hello World!</div>);
-}
+	return <div>Hello World!</div>;
+};
 
 async function getGoogleFont() {
 	try {
@@ -59,11 +60,11 @@ async function getGoogleFont() {
 
 		const fontDataResp = await fetch(resource[1]);
 		if (!fontDataResp.ok) {
-			throw new Error("Failed to fetch font data.")
+			throw new Error("Failed to fetch font data.");
 		}
 		return await fontDataResp.arrayBuffer();
 	} catch (error) {
-		console.error(error)
-		throw new Error("Failed to get google font")
+		console.error(error);
+		throw new Error("Failed to get google font");
 	}
 }
