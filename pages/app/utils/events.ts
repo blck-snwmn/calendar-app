@@ -1,4 +1,5 @@
 // app/utils/events.ts
+import { isEqual } from "date-fns";
 import { format, toDate, toZonedTime } from "date-fns-tz";
 
 export type Event = {
@@ -46,4 +47,52 @@ function getTimeZone(locale: string): string {
 		default:
 			return "UTC";
 	}
+}
+
+export function filterEventsByDate(events: Event[], date: string): Event[] {
+	return events.filter((event) => new Date(event.start).toISOString().slice(0, 10) === date);
+}
+
+export function findEventById(events: Event[], eventId: string, date: string): Event | undefined {
+	return events.find(
+		(event) => event.id === eventId && new Date(event.start).toISOString().slice(0, 10) === date,
+	);
+}
+
+export const generateCalendarDates = (
+	year: number,
+	month: number,
+	holidays: { [date: string]: boolean },
+	locale: string,
+	events: Event[],
+) => {
+	const numDays = daysInMonth(year, month);
+	const firstDay = new Date(year, month, 1).getDay();
+	const prevMonthDays = daysInMonth(year, month - 1);
+	const totalDays = firstDay + numDays;
+
+	return Array.from({ length: totalDays }, (_, i) => {
+		const isPrevMonth = i < firstDay;
+		const date = new Date(
+			year,
+			isPrevMonth ? month - 1 : month,
+			isPrevMonth ? prevMonthDays - firstDay + i + 1 : i - firstDay + 1,
+		);
+		const formattedDate = format(date, "yyyy-MM-dd");
+		const isHoliday = holidays[formattedDate] || false;
+		const dayEvents = events.filter((event) =>
+			isEqual(formatEventDate(event, locale), formattedDate),
+		);
+		return {
+			day: date.getDate(),
+			isHoliday,
+			events: dayEvents,
+			isPrevMonth,
+			key: `${isPrevMonth ? "prev" : "current"}-${formattedDate}`,
+		};
+	});
+};
+
+function daysInMonth(year: number, month: number) {
+	return new Date(year, month + 1, 0).getDate();
 }

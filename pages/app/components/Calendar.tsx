@@ -1,7 +1,7 @@
 import { Link } from "@remix-run/react";
 import { format, isEqual } from "date-fns";
 import type React from "react";
-import { type Event, formatEventDate } from "~/utils/events";
+import { type Event, formatEventDate, generateCalendarDates } from "~/utils/events";
 
 type CalendarProps = {
 	year: number;
@@ -9,44 +9,6 @@ type CalendarProps = {
 	holidays: { [date: string]: boolean };
 	locale: string;
 	events: Event[];
-};
-
-const daysInMonth = (year: number, month: number) => {
-	return new Date(year, month + 1, 0).getDate();
-};
-
-const generateCalendarDates = (
-	year: number,
-	month: number,
-	holidays: { [date: string]: boolean },
-	locale: string,
-	events: Event[],
-) => {
-	const numDays = daysInMonth(year, month);
-	const firstDay = new Date(year, month, 1).getDay();
-	const prevMonthDays = daysInMonth(year, month - 1);
-	const totalDays = firstDay + numDays;
-
-	return Array.from({ length: totalDays }, (_, i) => {
-		const isPrevMonth = i < firstDay;
-		const date = new Date(
-			year,
-			isPrevMonth ? month - 1 : month,
-			isPrevMonth ? prevMonthDays - firstDay + i + 1 : i - firstDay + 1,
-		);
-		const formattedDate = format(date, "yyyy-MM-dd");
-		const isHoliday = holidays[formattedDate] || false;
-		const dayEvents = events.filter((event) =>
-			isEqual(formatEventDate(event, locale), formattedDate),
-		);
-		return {
-			day: date.getDate(),
-			isHoliday,
-			events: dayEvents,
-			isPrevMonth,
-			key: `${isPrevMonth ? "prev" : "current"}-${formattedDate}`,
-		};
-	});
 };
 
 const Calendar: React.FC<CalendarProps> = ({
