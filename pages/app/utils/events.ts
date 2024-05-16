@@ -27,7 +27,7 @@ const eventData: Event[] = [
 	},
 ];
 
-export async function getEvents(year: number, month: number): Promise<Event[]> {
+export async function getMonthEvents(year: number, month: number): Promise<Event[]> {
 	return eventData;
 }
 
@@ -47,16 +47,6 @@ function getTimeZone(locale: string): string {
 		default:
 			return "UTC";
 	}
-}
-
-export function filterEventsByDate(events: Event[], date: string): Event[] {
-	return events.filter((event) => new Date(event.start).toISOString().slice(0, 10) === date);
-}
-
-export function findEventById(events: Event[], eventId: string, date: string): Event | undefined {
-	return events.find(
-		(event) => event.id === eventId && new Date(event.start).toISOString().slice(0, 10) === date,
-	);
 }
 
 export const generateCalendarDates = (

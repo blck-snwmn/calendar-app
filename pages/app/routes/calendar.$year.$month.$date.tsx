@@ -1,7 +1,7 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/cloudflare";
 import { useLoaderData } from "@remix-run/react";
 import EventList from "~/components/EventList";
-import { getEvents } from "~/utils/events";
+import { getMonthEvents } from "~/utils/events";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
 	const { year, month, date } = params;
@@ -19,7 +19,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 		});
 	}
 
-	const events = await getEvents(y, m);
+	const events = await getMonthEvents(y, m);
 
 	return json({
 		events: events.filter((event) => new Date(event.start).getDate() === d),

@@ -3,7 +3,7 @@ import { Link, Outlet, useLoaderData } from "@remix-run/react";
 import { addMonths, format, subMonths } from "date-fns";
 import { useTranslation } from "react-i18next";
 import Calendar from "~/components/Calendar";
-import { getEvents } from "~/utils/events";
+import { getMonthEvents } from "~/utils/events";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
 	const { year, month } = params;
@@ -22,7 +22,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 	console.log(`Loading data for ${y}-${m}`);
 	const holidays = { "2024-05-01": true };
 
-	const events = await getEvents(y, m);
+	const events = await getMonthEvents(y, m);
 
 	return json({ year: y, month: m, holidays, events });
 };
