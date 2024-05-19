@@ -66,14 +66,16 @@ export default function CalendarPage() {
 				</Link>
 			</h2>
 			<div className="flex mt-4">
-				<Calendar
-					year={year}
-					month={month}
-					holidays={holidays}
-					locale={i18n.language}
-					events={events}
-				/>
-				<div className="flex-1 ml-4">
+				<div className="flex-[2]">
+					<Calendar
+						year={year}
+						month={month}
+						holidays={holidays}
+						locale={i18n.language}
+						events={events}
+					/>
+				</div>
+				<div className="flex-[1]">
 					<Outlet />
 				</div>
 			</div>
