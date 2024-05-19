@@ -1,15 +1,29 @@
 import type { Event } from "~/utils/events";
+import { useNavigate } from "@remix-run/react";
 
 type EventDetailProps = {
 	event: Event;
 };
 
 const EventDetail: React.FC<EventDetailProps> = ({ event }) => {
+	const navigate = useNavigate();
+
 	return (
-		<div>
-			<h3>{event.title}</h3>
-			<p>{`Start: ${event.start}`}</p>
-			<p>{`End: ${event.end}`}</p>
+		<div className="relative bg-white shadow-md rounded-lg p-4">
+			<button
+				className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+				onClick={() => navigate(`/calendar/${event.date.split('-')[0]}/${event.date.split('-')[1]}`)}
+				type="button"
+			>
+				✕
+			</button>
+			<img src={event.thumbnail} alt={event.title} className="w-full h-64 object-cover rounded mb-4" />
+			<h3 className="text-xl font-bold mb-4">{event.title}</h3>
+			<p className="text-gray-600 mb-2">{event.date}</p>
+			{event.start && (
+				<p className="text-gray-600 mb-2">{`${event.start} - ${event.end}`}</p>
+			)}
+			<p className="text-gray-700">{event.description}</p>
 		</div>
 	);
 };
