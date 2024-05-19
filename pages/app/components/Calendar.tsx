@@ -1,7 +1,11 @@
 import { Link } from "@remix-run/react";
 import { format, isEqual } from "date-fns";
 import type React from "react";
-import { type Event, formatEventDate, generateCalendarDates } from "~/utils/events";
+import {
+	type Event,
+	formatEventDate,
+	generateCalendarDates,
+} from "~/utils/events";
 
 type CalendarProps = {
 	year: number;
@@ -35,8 +39,9 @@ const Calendar: React.FC<CalendarProps> = ({
 				<Link
 					key={key}
 					to={`${day}`}
-					className={`flex-0 flex-grow-[0] flex-shrink-[0] w-[14%] flex flex-col items-center justify-start h-[100px] m-0 bg-white shadow-sm transition-colors gap-2 p-2 box-border hover:bg-gray-200 ${isHoliday ? "text-red-500" : ""
-						} ${isPrevMonth ? "text-gray-500" : ""}`}
+					className={`flex-0 flex-grow-[0] flex-shrink-[0] w-[14%] flex flex-col items-center justify-start h-[100px] m-0 bg-white shadow-sm transition-colors gap-2 p-2 box-border hover:bg-gray-200 ${
+						isHoliday ? "text-red-500" : ""
+					} ${isPrevMonth ? "text-gray-500" : ""}`}
 				>
 					<div>{day}</div>
 					{events.map((event) => (

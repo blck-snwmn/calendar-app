@@ -21,11 +21,18 @@ const EventList: React.FC<EventListProps> = ({ events }) => {
 			<h3 className="text-xl font-bold mb-4">Event List</h3>
 			<p className="mb-4 text-gray-600">{`${year}-${month}-${date}`}</p>
 			<ul>
-				{events.map(event => (
+				{events.map((event) => (
 					<li key={event.id} className="mb-4 flex items-start">
-						<img src={event.thumbnail} alt={event.title} className="w-32 h-32 rounded mr-4" />
+						<img
+							src={event.thumbnail}
+							alt={event.title}
+							className="w-32 h-32 rounded mr-4"
+						/>
 						<div className="flex-grow">
-							<Link to={`${event.id}`} className="text-lg font-bold text-blue-600 hover:underline">
+							<Link
+								to={`${event.id}`}
+								className="text-lg font-bold text-blue-600 hover:underline"
+							>
 								{event.title}
 							</Link>
 							<p className="text-gray-600">

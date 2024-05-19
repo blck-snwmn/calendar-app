@@ -55,20 +55,28 @@ const eventData: Event[] = [
 	},
 ];
 
-export async function getMonthEvents(year: number, month: number): Promise<Event[]> {
+export async function getMonthEvents(
+	year: number,
+	month: number,
+): Promise<Event[]> {
 	return eventData;
 }
 
-export async function getDateEvents(year: number, month: number, day: number): Promise<Event[]> {
-	return eventData.filter(event =>
-		new Date(event.date).getFullYear() === year &&
-		new Date(event.date).getMonth() === month &&
-		new Date(event.date).getDate() === day
+export async function getDateEvents(
+	year: number,
+	month: number,
+	day: number,
+): Promise<Event[]> {
+	return eventData.filter(
+		(event) =>
+			new Date(event.date).getFullYear() === year &&
+			new Date(event.date).getMonth() === month &&
+			new Date(event.date).getDate() === day,
 	);
 }
 
 export async function getEvent(eventId: string): Promise<Event | undefined> {
-	return eventData.find(event => event.id === eventId);
+	return eventData.find((event) => event.id === eventId);
 }
 
 export function formatEventDate(event: Event, locale: string): string {
@@ -92,7 +100,7 @@ export function generateCalendarDates(
 	month: number,
 	holidays: { [date: string]: boolean },
 	locale: string,
-	events: Event[]
+	events: Event[],
 ) {
 	const numDays = daysInMonth(year, month);
 	const firstDay = new Date(year, month, 1).getDay();
@@ -104,19 +112,19 @@ export function generateCalendarDates(
 		const date = new Date(
 			year,
 			isPrevMonth ? month - 1 : month,
-			isPrevMonth ? prevMonthDays - firstDay + i + 1 : i - firstDay + 1
+			isPrevMonth ? prevMonthDays - firstDay + i + 1 : i - firstDay + 1,
 		);
 		const formattedDate = format(date, "yyyy-MM-dd");
 		const isHoliday = holidays[formattedDate] || false;
 		const dayEvents = events.filter((event) =>
-			isEqual(formatEventDate(event, locale), formattedDate)
+			isEqual(formatEventDate(event, locale), formattedDate),
 		);
 		return {
 			day: date.getDate(),
 			isHoliday,
 			events: dayEvents,
 			isPrevMonth,
-			key: `${isPrevMonth ? "prev" : "current"}-${formattedDate}`
+			key: `${isPrevMonth ? "prev" : "current"}-${formattedDate}`,
 		};
 	});
 }
