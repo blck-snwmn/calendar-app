@@ -24,7 +24,7 @@ const Calendar: React.FC<CalendarProps> = ({
 			{["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((weekday) => (
 				<div
 					key={weekday}
-					className="flex-0 flex-grow-[0] flex-shrink-[0] w-[14%] h-[30px] flex items-center justify-center bg-gray-200"
+					className="flex-0 flex-grow-[0] flex-shrink-[0] w-[13%] h-[30px] flex items-center justify-center bg-gray-200"
 				>
 					{weekday}
 				</div>
@@ -35,7 +35,7 @@ const Calendar: React.FC<CalendarProps> = ({
 				return (
 					<div
 						key={key}
-						className={`relative flex-0 flex-grow-[0] flex-shrink-[0] w-[14%] flex flex-col items-center justify-start h-[220px] m-0 bg-white shadow-sm transition-colors gap-2 p-2 box-border ${isHoliday ? "text-red-500" : ""}`}
+						className={`relative flex-0 flex-grow-[0] flex-shrink-[0] w-[13%] flex flex-col items-center justify-start h-[220px] m-0 bg-white shadow-sm transition-colors gap-2 p-2 box-border ${isHoliday ? "text-red-500" : ""}`}
 					>
 						<div>{day}</div>
 						{displayEvents.map(event => (
@@ -43,7 +43,10 @@ const Calendar: React.FC<CalendarProps> = ({
 								<Link
 									key={event.id}
 									to={`${event.id}`}
-									className="text-xs h-[24px] p-1 mb-1 rounded bg-gray-200 shadow-xs whitespace-nowrap overflow-hidden text-ellipsis w-full box-border"
+									className={`text-xs h-[24px] p-1 mb-1 rounded ${event.isStart && event.isEnd
+											? 'bg-gray-200 text-black'
+											: 'bg-gray-700 text-white'
+										} shadow-xs whitespace-nowrap overflow-hidden text-ellipsis w-full box-border`}
 								>
 									{event.title}
 								</Link>
@@ -52,7 +55,9 @@ const Calendar: React.FC<CalendarProps> = ({
 							)
 						))}
 						{hasMoreEvents && (
-							<div className="text-xs text-gray-500">+{events.length - 4} more</div>
+							<div className="text-xs text-gray-500 h-[20px] flex items-center justify-center">
+								+{events.length - 4} more
+							</div>
 						)}
 					</div>
 				);
