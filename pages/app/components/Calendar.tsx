@@ -19,7 +19,6 @@ const Calendar: React.FC<CalendarProps> = ({
 }) => {
 	const extendedEvents = splitMultiDayEvents(events);
 	const allDates = generateCalendarDates(year, month, holidays, locale, extendedEvents);
-
 	return (
 		<div className="flex flex-wrap p-2 justify-start w-full">
 			{["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((weekday) => (
@@ -41,12 +40,12 @@ const Calendar: React.FC<CalendarProps> = ({
 							<Link
 								key={event.id}
 								to={`${event.id}`}
-								className="text-xs p-1 rounded bg-gray-200 shadow-xs whitespace-nowrap overflow-hidden text-ellipsis w-full box-border mb-1"
+								className="text-xs h-[24px] p-1 mb-1 rounded bg-gray-200 shadow-xs whitespace-nowrap overflow-hidden text-ellipsis w-full box-border"
 							>
 								{event.title}
 							</Link>
 						) : (
-							<div key={event.id} className="h-[20px] w-full mb-1" />
+							<div key={event.id} className="h-[24px] w-full mb-1 bg-transparent" />
 						)
 					))}
 				</div>
