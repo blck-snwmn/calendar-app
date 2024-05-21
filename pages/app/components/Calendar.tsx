@@ -44,8 +44,8 @@ const Calendar: React.FC<CalendarProps> = ({
 									key={event.id}
 									to={`${event.id}`}
 									className={`text-xs h-[24px] p-1 mb-1 rounded ${event.isStart && event.isEnd
-											? 'bg-gray-200 text-black'
-											: 'bg-gray-700 text-white'
+											? 'bg-blue-100 text-black'  // 単日の予定
+											: 'bg-blue-500 text-white'  // 複数日にまたがる予定
 										} shadow-xs whitespace-nowrap overflow-hidden text-ellipsis w-full box-border`}
 								>
 									{event.title}
@@ -65,5 +65,6 @@ const Calendar: React.FC<CalendarProps> = ({
 		</div>
 	);
 };
+
 
 export default Calendar;
